@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-charcoal bg-warm;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  /* ── Buttons ── */
+  .btn-primary {
+    @apply inline-block bg-forest text-warm px-8 py-3 rounded-full font-sans text-sm font-medium tracking-widest uppercase
+           transition-all duration-300 hover:bg-moss hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply inline-block border border-warm text-warm px-8 py-3 rounded-full font-sans text-sm font-medium tracking-widest uppercase
+           transition-all duration-300 hover:bg-warm hover:text-forest;
+  }
+
+  .btn-earth {
+    @apply inline-block bg-earth text-warm px-8 py-3 rounded-full font-sans text-sm font-medium tracking-widest uppercase
+           transition-all duration-300 hover:bg-bark hover:shadow-lg hover:-translate-y-0.5;
+  }
+
+  /* ── Section heading ── */
+  .section-label {
+    @apply block text-sage text-xs font-sans tracking-[0.25em] uppercase mb-3;
+  }
+
+  .section-title {
+    @apply font-serif text-4xl md:text-5xl text-forest leading-tight;
+  }
+
+  /* ── Card ── */
+  .card {
+    @apply bg-warm rounded-2xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  /* ── Input ── */
+  .form-input {
+    @apply w-full border border-sand rounded-xl px-4 py-3 text-sm font-sans text-charcoal bg-warm
+           focus:outline-none focus:ring-2 focus:ring-sage focus:border-transparent transition;
+  }
+
+  /* ── Fade-up utility for scroll reveal ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F5F0E8; }
+::-webkit-scrollbar-thumb { background: #7A9E7E; border-radius: 3px; }
