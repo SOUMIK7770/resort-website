@@ -15,7 +15,7 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 text-center text-warm px-6 max-w-4xl mx-auto">
         <span className="block font-sans text-xs tracking-[0.3em] uppercase text-sand mb-6 animate-fade-in">
-          Coorg, Karnataka · Est. 2016
+          Created by Soumik
         </span>
         <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight mb-6 animate-fade-up">
           Where the Forest

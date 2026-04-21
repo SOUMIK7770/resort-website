@@ -17,9 +17,9 @@ export default function Footer() {
               A sanctuary where ancient forest meets refined luxury. Reconnect with nature, rediscover yourself.
             </p>
             <div className="flex gap-4">
-              <a href="#" aria-label="Website"   className="hover:text-sage transition-colors"><Globe  size={18} /></a>
-              <a href="#" aria-label="Instagram"  className="hover:text-sage transition-colors"><Hash   size={18} /></a>
-              <a href="#" aria-label="Email"      className="hover:text-sage transition-colors"><AtSign size={18} /></a>
+              <a href="#" aria-label="Website" className="hover:text-sage transition-colors"><Globe size={18} /></a>
+              <a href="#" aria-label="Instagram" className="hover:text-sage transition-colors"><Hash size={18} /></a>
+              <a href="#" aria-label="Email" className="hover:text-sage transition-colors"><AtSign size={18} /></a>
             </div>
           </div>
 
@@ -49,26 +49,26 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-serif text-warm text-lg mb-5">Contact</h4>
+            <h4 className="font-serif text-warm text-lg mb-5">Contact Developer </h4>
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={16} className="text-sage mt-0.5 shrink-0" />
-                <span>Vanavil Forest Estate, Coorg Hills, Karnataka 571201, India</span>
+                <span>SOUMIK POHI : Lovely Professional University, Punjab </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={16} className="text-sage shrink-0" />
-                <a href="tel:+918001234567" className="hover:text-sage transition-colors">+91 800 123 4567</a>
+                <a href="tel:+917873419960" className="hover:text-sage transition-colors">+91 7873419960</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={16} className="text-sage shrink-0" />
-                <a href="mailto:stay@vanavil.com" className="hover:text-sage transition-colors">stay@vanavil.com</a>
+                <a href="mailto:iamsoumik.pohi@gmail.com" className="hover:text-sage transition-colors">iamsoumik.pohi@gmail.com</a>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-warm/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-warm/40">
-          <span>© {new Date().getFullYear()} Vanavil Resort. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Soumik Pohi. All rights reserved.</span>
           <div className="flex gap-6">
             <a href="#" className="hover:text-warm/60 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-warm/60 transition-colors">Terms of Service</a>
