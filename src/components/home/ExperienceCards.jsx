@@ -29,7 +29,7 @@ export default function ExperienceCards() {
           <span className="reveal section-label">Curated Journeys</span>
           <h2 className="reveal section-title">Experiences That Stay With You</h2>
           <p className="reveal font-sans text-charcoal/60 mt-4 leading-relaxed">
-            Each experience at Vanavil is crafted to deepen your connection to the forest and to yourself.
+            Each experience at Angel Hill is crafted to deepen your connection to the nature and to yourself.
           </p>
         </div>
 

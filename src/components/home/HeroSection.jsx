@@ -7,7 +7,7 @@ export default function HeroSection() {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/hero.png')" }}
+        style={{ backgroundImage: "url('/images/main.PNG')" }}
       />
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
@@ -15,15 +15,15 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 text-center text-warm px-6 max-w-4xl mx-auto">
         <span className="block font-sans text-xs tracking-[0.3em] uppercase text-sand mb-6 animate-fade-in">
-          Created by Soumik
+          A Hidden Retreat in Bheempura, Rajasthan
         </span>
         <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight mb-6 animate-fade-up">
-          Where the Forest
+          Where Every Evening
           <br />
-          <em className="italic text-sand">Calls You Home</em>
+          <em className="italic text-sand">Is an Unforgettable Experience</em>
         </h1>
         <p className="font-sans text-base md:text-lg text-warm/80 max-w-xl mx-auto mb-10 animate-fade-up-d">
-          A luxury forest retreat in the heart of the Western Ghats. Reconnect with nature, savour stillness, and return transformed.
+          Crafted for peaceful stays, family getaways, celebrations, and unforgettable evenings under the open sky.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up-d">
           <Link to="/booking" className="btn-outline">Reserve a Stay</Link>

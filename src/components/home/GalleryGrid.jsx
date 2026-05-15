@@ -11,9 +11,9 @@ export default function GalleryGrid() {
         {/* Heading */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="section-label">The Property</span>
-          <h2 className="section-title">A Glimpse of Vanavil</h2>
+          <h2 className="section-title">A Glimpse of Angel Hill</h2>
           <p className="font-sans text-charcoal/60 mt-4">
-            Every frame tells a story of nature, craftsmanship, and quiet luxury.
+            Every frame tells a story of peace, craftsmanship, and quiet luxury.
           </p>
         </div>
 

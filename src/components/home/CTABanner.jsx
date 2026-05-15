@@ -15,7 +15,7 @@ export default function CTABanner() {
           Limited Availability
         </span>
         <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight">
-          Your Forest Escape Awaits
+          Your Nature Escape Awaits
         </h2>
         <p className="font-sans text-warm/70 text-base md:text-lg mb-10 max-w-xl mx-auto">
           Rooms fill quickly during peak season. Reserve your stay today and secure your piece of paradise.

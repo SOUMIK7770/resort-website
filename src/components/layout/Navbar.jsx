@@ -38,7 +38,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" className={`flex items-center gap-2 font-serif text-2xl font-semibold transition-colors duration-300 ${textColor}`}>
             <Leaf size={22} className="text-sage" />
-            Vanavil
+            Angel Hill
           </Link>
 
           {/* Desktop Nav */}
