@@ -2,6 +2,7 @@ import { useState } from 'react'
 import BookingWidget from '../components/booking/BookingWidget'
 import RoomCard from '../components/booking/RoomCard'
 import BookingSummary from '../components/booking/BookingSummary'
+import BookingSuccess from '../components/booking/BookingSuccess'
 import { rooms } from '../data/rooms'
 
 const today = new Date().toISOString().split('T')[0]
@@ -12,24 +13,73 @@ export default function BookingPage() {
     checkIn: today,
     checkOut: tomorrow,
     guests: 2,
-    type: '',
+    bookingType: 'room',
   })
   const [selectedRoom, setSelectedRoom] = useState(null)
-  const [confirmed, setConfirmed] = useState(false)
+  const [successDetails, setSuccessDetails] = useState(null)
 
   const filteredRooms = rooms.filter(r => {
-    if (filters.type && r.type !== filters.type) return false
-    if (r.capacity < filters.guests) return false
+    if (r.bookingType !== filters.bookingType) return false
+    // For room bookings, also filter by guest capacity
+    if (filters.bookingType === 'room' && r.capacity < filters.guests) return false
     return true
   })
 
-  const handleBook = (room) => {
-    setSelectedRoom(prev => prev?.id === room.id ? null : room)
-    setConfirmed(false)
+  // Clear selection when booking type changes
+  const handleFiltersChange = (newFilters) => {
+    if (typeof newFilters === 'function') {
+      setFilters(prev => {
+        const next = newFilters(prev)
+        if (next.bookingType !== prev.bookingType) {
+          setSelectedRoom(null)
+        }
+        return next
+      })
+    } else {
+      setFilters(prev => {
+        if (newFilters.bookingType !== prev.bookingType) {
+          setSelectedRoom(null)
+        }
+        return newFilters
+      })
+    }
   }
 
-  const handleConfirm = () => {
-    setConfirmed(true)
+  const handleSelect = (room) => {
+    setSelectedRoom(prev => prev?.id === room.id ? null : room)
+  }
+
+  const handleSuccess = (details) => {
+    setSuccessDetails(details)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleReset = () => {
+    setSuccessDetails(null)
+    setSelectedRoom(null)
+    setFilters({
+      checkIn: today,
+      checkOut: tomorrow,
+      guests: 2,
+      bookingType: 'room',
+    })
+  }
+
+  // Show success view
+  if (successDetails) {
+    return (
+      <div className="min-h-screen bg-cream">
+        <div className="bg-forest pt-32 pb-12 px-6">
+          <div className="max-w-7xl mx-auto">
+            <span className="block font-sans text-xs tracking-[0.3em] uppercase text-sage mb-3">
+              Angel Hill
+            </span>
+            <h1 className="font-serif text-4xl md:text-5xl text-warm">Booking Confirmed</h1>
+          </div>
+        </div>
+        <BookingSuccess details={successDetails} onReset={handleReset} />
+      </div>
+    )
   }
 
   return (
@@ -38,11 +88,13 @@ export default function BookingPage() {
       <div className="bg-forest pt-32 pb-12 px-6">
         <div className="max-w-7xl mx-auto">
           <span className="block font-sans text-xs tracking-[0.3em] uppercase text-sage mb-3">
-            Vanavil Resort
+            Angel Hill
           </span>
           <h1 className="font-serif text-4xl md:text-5xl text-warm">Reserve Your Stay</h1>
           <p className="font-sans text-warm/60 mt-3 text-base max-w-lg">
-            Choose from our curated collection of forest villas, treetop suites, and private cottages.
+            {filters.bookingType === 'private'
+              ? 'Book the entire estate for your celebration, family function, or private retreat.'
+              : 'Choose from our curated collection of forest villas, suites, and cottages.'}
           </p>
         </div>
       </div>
@@ -51,53 +103,47 @@ export default function BookingPage() {
 
         {/* Booking Widget */}
         <div className="mb-10">
-          <BookingWidget filters={filters} setFilters={setFilters} />
+          <BookingWidget filters={filters} setFilters={handleFiltersChange} />
         </div>
-
-        {/* Confirmation Banner */}
-        {confirmed && (
-          <div className="mb-8 bg-sage/10 border border-sage rounded-2xl p-5 text-center">
-            <p className="font-serif text-xl text-forest">🌿 Your booking request has been received!</p>
-            <p className="font-sans text-sm text-charcoal/60 mt-2">
-              Our team will confirm your reservation at <strong>{selectedRoom?.title}</strong> shortly via email.
-            </p>
-          </div>
-        )}
 
         {/* Main layout: rooms + summary */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-          {/* Room Cards */}
+          {/* Room / Property Cards */}
           <div className="lg:col-span-2">
             <p className="font-sans text-sm text-charcoal/40 mb-5">
-              {filteredRooms.length} room{filteredRooms.length !== 1 ? 's' : ''} available
+              {filteredRooms.length} {filters.bookingType === 'private' ? 'option' : 'room'}{filteredRooms.length !== 1 ? 's' : ''} available
             </p>
 
             {filteredRooms.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className={`grid gap-6 ${
+                filters.bookingType === 'private'
+                  ? 'grid-cols-1'
+                  : 'grid-cols-1 sm:grid-cols-2'
+              }`}>
                 {filteredRooms.map(room => (
                   <RoomCard
                     key={room.id}
                     room={room}
                     isSelected={selectedRoom?.id === room.id}
-                    onBook={handleBook}
+                    onBook={handleSelect}
                   />
                 ))}
               </div>
             ) : (
               <div className="text-center py-20 text-charcoal/40">
                 <p className="font-serif text-2xl mb-3">No rooms match your filters</p>
-                <p className="font-sans text-sm">Try adjusting your guest count or room type.</p>
+                <p className="font-sans text-sm">Try adjusting your guest count.</p>
               </div>
             )}
           </div>
 
-          {/* Booking Summary */}
+          {/* Booking Inquiry Summary */}
           <div className="lg:col-span-1">
             <BookingSummary
               room={selectedRoom}
               filters={filters}
-              onConfirm={handleConfirm}
+              onSuccess={handleSuccess}
             />
           </div>
         </div>

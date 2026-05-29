@@ -1,6 +1,8 @@
 import { Check } from 'lucide-react'
 
 export default function RoomCard({ room, onBook, isSelected }) {
+  const isPrivate = room.bookingType === 'private'
+
   return (
     <div className={`card flex flex-col ${isSelected ? 'ring-2 ring-forest' : ''}`}>
       {/* Image */}
@@ -11,7 +13,7 @@ export default function RoomCard({ room, onBook, isSelected }) {
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <span className="absolute top-3 left-3 bg-forest text-warm text-xs font-sans px-3 py-1 rounded-full uppercase tracking-wider">
-          {room.type}
+          {isPrivate ? 'Exclusive' : room.bookingType}
         </span>
         {isSelected && (
           <div className="absolute top-3 right-3 bg-sage text-warm rounded-full p-1">
@@ -25,12 +27,21 @@ export default function RoomCard({ room, onBook, isSelected }) {
         <div className="flex items-start justify-between mb-3">
           <div>
             <h3 className="font-serif text-xl text-forest">{room.title}</h3>
-            <p className="font-sans text-xs text-charcoal/40 mt-0.5">Up to {room.capacity} guest{room.capacity > 1 ? 's' : ''}</p>
+            <p className="font-sans text-xs text-charcoal/40 mt-0.5">
+              Up to {room.capacity} guest{room.capacity > 1 ? 's' : ''}
+            </p>
           </div>
-          <div className="text-right">
-            <p className="font-serif text-2xl text-earth">₹{room.price.toLocaleString('en-IN')}</p>
-            <p className="font-sans text-xs text-charcoal/40">per night</p>
-          </div>
+          {room.price ? (
+            <div className="text-right">
+              <p className="font-serif text-2xl text-earth">₹{room.price.toLocaleString('en-IN')}</p>
+              <p className="font-sans text-xs text-charcoal/40">per night</p>
+            </div>
+          ) : (
+            <div className="text-right">
+              <p className="font-serif text-lg text-earth">Custom Quote</p>
+              <p className="font-sans text-xs text-charcoal/40">contact us</p>
+            </div>
+          )}
         </div>
 
         <p className="font-sans text-sm text-charcoal/60 leading-relaxed mb-5">
@@ -56,7 +67,7 @@ export default function RoomCard({ room, onBook, isSelected }) {
                 : 'bg-forest text-warm hover:bg-moss hover:shadow-md hover:-translate-y-0.5'
             }`}
           >
-            {isSelected ? '✓ Selected' : 'Book Now'}
+            {isSelected ? '✓ Selected' : 'Select'}
           </button>
         </div>
       </div>

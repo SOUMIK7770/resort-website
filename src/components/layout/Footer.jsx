@@ -49,7 +49,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-serif text-warm text-lg mb-5">Contact Developer </h4>
+            <h4 className="font-serif text-warm text-lg mb-5">Contact Details </h4>
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={16} className="text-sage mt-0.5 shrink-0" />
@@ -61,7 +61,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={16} className="text-sage shrink-0" />
-                <a href="mailto:iamsoumik.pohi@gmail.com" className="hover:text-sage transition-colors">angel.hill@gmail.com</a>
+                <a href="angelhillresort14@gmail.com" className="hover:text-sage transition-colors">angelhillresort14@gmail.com</a>
               </li>
             </ul>
           </div>
@@ -70,9 +70,9 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-warm/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-warm/40">
           <span>© {new Date().getFullYear()} Angel Hill. All rights reserved.</span>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-warm/60 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-warm/60 transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-warm/60 transition-colors">Cancellation Policy</a>
+            <a href="iamsoumik.pohi@gmail.com" className="hover:text-warm/60 transition-colors">Contact Developer</a>
+            {/* <a href="#" className="hover:text-warm/60 transition-colors">Terms of Service</a> */}
+            {/* <a href="#" className="hover:text-warm/60 transition-colors">Cancellation Policy</a> */}
           </div>
         </div>
       </div>

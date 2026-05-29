@@ -1,4 +1,6 @@
-import { CalendarDays, Users, Leaf } from 'lucide-react'
+import { useState } from 'react'
+import { CalendarDays, Users, Leaf, User, Phone, Mail, MessageSquare, Loader2 } from 'lucide-react'
+import { sendBookingInquiry } from '../../utils/emailService'
 
 function diffNights(checkIn, checkOut) {
   if (!checkIn || !checkOut) return 0
@@ -15,13 +17,94 @@ function fmt(dateStr) {
   })
 }
 
-export default function BookingSummary({ room, filters, onConfirm }) {
+export default function BookingSummary({ room, filters, onSuccess }) {
   const nights = diffNights(filters.checkIn, filters.checkOut)
-  const roomTotal = room ? room.price * nights : 0
-  const taxes = Math.round(roomTotal * 0.12)
-  const total = roomTotal + taxes
+
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    notes: '',
+  })
+  const [errors, setErrors] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const ready = room && nights > 0
+
+  const handleChange = (field, value) => {
+    setForm(prev => ({ ...prev, [field]: value }))
+    // Clear field error on change
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }))
+    }
+  }
+
+  const validate = () => {
+    const newErrors = {}
+
+    if (!form.name.trim()) {
+      newErrors.name = 'Name is required'
+    }
+
+    if (!form.phone.trim()) {
+      newErrors.phone = 'Phone number is required'
+    } else if (!/^[+]?[\d\s-]{7,15}$/.test(form.phone.trim())) {
+      newErrors.phone = 'Enter a valid phone number'
+    }
+
+    if (!form.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
+      newErrors.email = 'Enter a valid email address'
+    }
+
+    if (!room) {
+      newErrors.room = 'Please select a room or property'
+    }
+
+    if (nights <= 0) {
+      newErrors.dates = 'Please select valid check-in and check-out dates'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleSubmit = async () => {
+    if (!validate()) return
+
+    setLoading(true)
+    setSubmitError('')
+
+    try {
+      const bookingTypeLabel = filters.bookingType === 'private'
+        ? 'Complete Private Booking'
+        : 'Room Booking'
+
+      await sendBookingInquiry({
+        name: form.name.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim(),
+        bookingType: bookingTypeLabel,
+        selectedRoom: room.title,
+        guests: filters.guests,
+        checkIn: filters.checkIn,
+        checkOut: filters.checkOut,
+        notes: form.notes.trim(),
+      })
+
+      onSuccess({
+        name: form.name.trim(),
+        room: room.title,
+      })
+    } catch (err) {
+      console.error('EmailJS error:', err)
+      setSubmitError('Something went wrong. Please try again or contact us directly.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="bg-warm rounded-2xl border border-sand shadow-xl overflow-hidden sticky top-28">
@@ -29,20 +112,23 @@ export default function BookingSummary({ room, filters, onConfirm }) {
       <div className="bg-forest px-6 py-5">
         <div className="flex items-center gap-2 text-warm">
           <Leaf size={18} className="text-sage" />
-          <h3 className="font-serif text-xl">Booking Summary</h3>
+          <h3 className="font-serif text-xl">Booking Inquiry</h3>
         </div>
       </div>
 
       <div className="p-6 space-y-5">
-        {/* Room */}
+
+        {/* Selection Summary */}
         <div>
-          <p className="font-sans text-xs text-charcoal/40 uppercase tracking-widest mb-2">Selected Room</p>
+          <p className="font-sans text-xs text-charcoal/40 uppercase tracking-widest mb-2">Selected</p>
           {room ? (
             <div className="flex gap-3 items-center">
               <img src={room.image} alt={room.title} className="w-14 h-14 rounded-xl object-cover shrink-0" />
               <div>
                 <p className="font-serif text-base text-forest">{room.title}</p>
-                <p className="font-sans text-xs text-charcoal/50 mt-0.5">₹{room.price.toLocaleString('en-IN')} / night</p>
+                <p className="font-sans text-xs text-charcoal/50 mt-0.5">
+                  {filters.bookingType === 'private' ? 'Private Booking' : 'Room Booking'}
+                </p>
               </div>
             </div>
           ) : (
@@ -52,62 +138,122 @@ export default function BookingSummary({ room, filters, onConfirm }) {
 
         <div className="h-px bg-sand" />
 
-        {/* Dates */}
+        {/* Dates & Guests */}
         <div className="space-y-3">
-          <p className="font-sans text-xs text-charcoal/40 uppercase tracking-widest">Dates</p>
           <div className="flex items-center gap-3 text-sm">
-            <CalendarDays size={15} className="text-sage" />
+            <CalendarDays size={15} className="text-sage shrink-0" />
             <span className="text-charcoal/70">{fmt(filters.checkIn)} → {fmt(filters.checkOut)}</span>
           </div>
           {nights > 0 && (
             <p className="font-sans text-xs text-charcoal/40 ml-6">{nights} night{nights > 1 ? 's' : ''}</p>
           )}
+          <div className="flex items-center gap-3 text-sm">
+            <Users size={15} className="text-sage shrink-0" />
+            <span className="text-charcoal/70">{filters.guests} guest{filters.guests > 1 ? 's' : ''}</span>
+          </div>
         </div>
 
-        {/* Guests */}
-        <div className="flex items-center gap-3 text-sm">
-          <Users size={15} className="text-sage" />
-          <span className="text-charcoal/70">{filters.guests} guest{filters.guests > 1 ? 's' : ''}</span>
-        </div>
+        {(errors.room || errors.dates) && (
+          <p className="font-sans text-xs text-red-500">{errors.room || errors.dates}</p>
+        )}
 
         <div className="h-px bg-sand" />
 
-        {/* Price Breakdown */}
-        <div className="space-y-3 font-sans text-sm">
-          <div className="flex justify-between text-charcoal/60">
-            <span>
-              {room ? `₹${room.price.toLocaleString('en-IN')} × ${nights} night${nights !== 1 ? 's' : ''}` : 'Room charges'}
-            </span>
-            <span>₹{roomTotal.toLocaleString('en-IN')}</span>
+        {/* Contact Form */}
+        <div className="space-y-4">
+          <p className="font-sans text-xs text-charcoal/40 uppercase tracking-widest">Your Details</p>
+
+          {/* Name */}
+          <div>
+            <div className="relative">
+              <User size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-sage pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={form.name}
+                onChange={e => handleChange('name', e.target.value)}
+                className={`form-input pl-9 ${errors.name ? 'ring-2 ring-red-300 border-red-300' : ''}`}
+              />
+            </div>
+            {errors.name && <p className="font-sans text-xs text-red-500 mt-1">{errors.name}</p>}
           </div>
-          <div className="flex justify-between text-charcoal/60">
-            <span>Taxes & fees (12%)</span>
-            <span>₹{taxes.toLocaleString('en-IN')}</span>
+
+          {/* Phone */}
+          <div>
+            <div className="relative">
+              <Phone size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-sage pointer-events-none" />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                value={form.phone}
+                onChange={e => handleChange('phone', e.target.value)}
+                className={`form-input pl-9 ${errors.phone ? 'ring-2 ring-red-300 border-red-300' : ''}`}
+              />
+            </div>
+            {errors.phone && <p className="font-sans text-xs text-red-500 mt-1">{errors.phone}</p>}
           </div>
-          <div className="h-px bg-sand" />
-          <div className="flex justify-between font-medium text-base">
-            <span className="font-serif text-forest text-lg">Total</span>
-            <span className="font-serif text-earth text-lg">
-              {ready ? `₹${total.toLocaleString('en-IN')}` : '—'}
-            </span>
+
+          {/* Email */}
+          <div>
+            <div className="relative">
+              <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-sage pointer-events-none" />
+              <input
+                type="email"
+                placeholder="Email Address"
+                value={form.email}
+                onChange={e => handleChange('email', e.target.value)}
+                className={`form-input pl-9 ${errors.email ? 'ring-2 ring-red-300 border-red-300' : ''}`}
+              />
+            </div>
+            {errors.email && <p className="font-sans text-xs text-red-500 mt-1">{errors.email}</p>}
+          </div>
+
+          {/* Notes */}
+          <div>
+            <div className="relative">
+              <MessageSquare size={15} className="absolute left-3 top-3.5 text-sage pointer-events-none" />
+              <textarea
+                placeholder="Special requests or notes (optional)"
+                value={form.notes}
+                onChange={e => handleChange('notes', e.target.value)}
+                rows={3}
+                className="form-textarea pl-9"
+              />
+            </div>
           </div>
         </div>
 
+        {/* Submit Error */}
+        {submitError && (
+          <div className="bg-red-50 border border-red-200 rounded-xl p-3">
+            <p className="font-sans text-xs text-red-600">{submitError}</p>
+          </div>
+        )}
+
         {/* CTA */}
         <button
-          onClick={onConfirm}
-          disabled={!ready}
-          className={`w-full py-4 rounded-full font-sans text-sm tracking-widest uppercase transition-all duration-300 ${
-            ready
+          onClick={handleSubmit}
+          disabled={!ready || loading}
+          className={`w-full py-4 rounded-full font-sans text-sm tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-2 ${
+            ready && !loading
               ? 'bg-earth text-warm hover:bg-bark hover:shadow-lg hover:-translate-y-0.5'
               : 'bg-sand text-charcoal/30 cursor-not-allowed'
           }`}
         >
-          {ready ? 'Confirm Booking' : 'Select Room & Dates'}
+          {loading ? (
+            <>
+              <Loader2 size={16} className="animate-spin" />
+              Sending...
+            </>
+          ) : ready ? (
+            'Submit Inquiry'
+          ) : (
+            'Select Room & Dates'
+          )}
         </button>
 
         <p className="font-sans text-xs text-center text-charcoal/40">
-          Free cancellation up to 48 hours before check-in
+          No payment required — our team will contact you to confirm your reservation.
         </p>
       </div>
     </div>

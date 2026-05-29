@@ -59,7 +59,7 @@ export default function AboutSection() {
             </p>
             <div className="reveal grid grid-cols-3 gap-6 pt-4 border-t border-sand">
               {[
-                { num: '5', unit: 'Acres', label: 'of Beautiful Estate' },
+                { num: '2', unit: 'Acres', label: 'of Beautiful Estate' },
                 { num: '2', unit: 'Bungalow', label: 'Private Retreats' },
                 { num: '100%', unit: 'Organic', label: 'Farm-to-Table' },
               ].map(stat => (
