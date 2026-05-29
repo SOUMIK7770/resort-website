@@ -48,8 +48,8 @@ export default function BookingSuccess({ details, onReset }) {
           <p className="font-sans text-xs text-charcoal/40 uppercase tracking-widest mb-1">Need Help?</p>
           <p className="font-sans text-sm text-charcoal/70">
             Reach us anytime at<br />
-            <a href="mailto:iamsoumik.pohi@gmail.com" className="text-forest hover:text-sage transition-colors">
-              iamsoumik.pohi@gmail.com
+            <a href="mailto:angelhillresort14@gmail.com" className="text-forest hover:text-sage transition-colors">
+              angelhillresort14@gmail.com
             </a>
           </p>
         </div>
