@@ -33,7 +33,7 @@ export const rooms = [
   },
   {
     id: 2,
-    title: 'Premium Garden Room',
+    title: 'Premium Exotic Room',
     description:
       "Designed for comfort and relaxation, the Premium Garden Room offers spacious interiors, soothing lighting, elegant décor, and a peaceful atmosphere. A perfect retreat for guests looking to unwind amidst nature and luxury.",
     price: 1499,
