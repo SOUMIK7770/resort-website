@@ -31,7 +31,13 @@ export default function RoomCard({ room, onBook, isSelected }) {
               Up to {room.capacity} guest{room.capacity > 1 ? 's' : ''}
             </p>
           </div>
-          {room.price ? (
+          {isPrivate ? (
+            <div className="text-right">
+              <p className="font-serif text-2xl text-earth">₹{room.price.toLocaleString('en-IN')}</p>
+              <p className="font-sans text-xs text-charcoal/40">per person</p>
+              <p className="font-sans text-xs text-sage mt-0.5">Negotiable for 15+</p>
+            </div>
+          ) : room.price ? (
             <div className="text-right">
               <p className="font-serif text-2xl text-earth">₹{room.price.toLocaleString('en-IN')}</p>
               <p className="font-sans text-xs text-charcoal/40">per night</p>

@@ -43,7 +43,7 @@ export default function AboutSection() {
           <div className="space-y-6">
             <span className="reveal section-label">Our Story</span>
             <h2 className="reveal section-title">
-              A Hidden Retreat in Bheempura
+              A Hidden Retreat in Seengwana
             </h2>
             <p className="reveal font-sans text-charcoal/70 leading-relaxed text-base">
               Designed to blend luxury with nature, 

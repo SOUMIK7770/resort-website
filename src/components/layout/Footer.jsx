@@ -53,7 +53,7 @@ export default function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={16} className="text-sage mt-0.5 shrink-0" />
-                <span>Angel Hill resorts, Seengwana, Bheempura, Rajasthan 303805 </span>
+                <span>Angel Hill resorts, Seengwana, Rajasthan 303805 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={16} className="text-sage shrink-0" />

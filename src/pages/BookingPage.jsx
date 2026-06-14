@@ -32,6 +32,7 @@ export default function BookingPage() {
         const next = newFilters(prev)
         if (next.bookingType !== prev.bookingType) {
           setSelectedRoom(null)
+          next.guests = next.bookingType === 'private' ? 5 : 2
         }
         return next
       })
@@ -39,6 +40,7 @@ export default function BookingPage() {
       setFilters(prev => {
         if (newFilters.bookingType !== prev.bookingType) {
           setSelectedRoom(null)
+          newFilters.guests = newFilters.bookingType === 'private' ? 5 : 2
         }
         return newFilters
       })

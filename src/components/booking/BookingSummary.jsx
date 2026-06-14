@@ -153,6 +153,32 @@ export default function BookingSummary({ room, filters, onSuccess }) {
           </div>
         </div>
 
+        {/* Private Booking Pricing */}
+        {filters.bookingType === 'private' && room && (
+          <>
+            <div className="h-px bg-sand" />
+            <div className="space-y-2">
+              <p className="font-sans text-xs text-charcoal/40 uppercase tracking-widest">Estimated Price</p>
+              <div className="flex justify-between font-sans text-sm text-charcoal/60">
+                <span>₹{room.price.toLocaleString('en-IN')} × {filters.guests} guests</span>
+                <span>₹{(room.price * filters.guests).toLocaleString('en-IN')}</span>
+              </div>
+              {filters.guests > 15 && (
+                <div className="bg-sage/10 border border-sage/30 rounded-xl px-3 py-2">
+                  <p className="font-sans text-xs text-forest">
+                    ✨ Price is negotiable for groups of 15+ guests. Our team will share a custom quote.
+                  </p>
+                </div>
+              )}
+              {filters.guests <= 15 && (
+                <p className="font-sans text-xs text-charcoal/40">
+                  Groups of 15+ get special pricing
+                </p>
+              )}
+            </div>
+          </>
+        )}
+
         {(errors.room || errors.dates) && (
           <p className="font-sans text-xs text-red-500">{errors.room || errors.dates}</p>
         )}

@@ -1,7 +1,7 @@
 export const testimonials = [
   {
     id: 1,
-    name: 'Payal Meena',
+    name: 'Pragya Tripathi',
     location: 'Couple',
     rating: 5,
     text: "The staff at this hotel were incredibly welcoming and helpful throughout our stay. The rooms were spotless and very comfortable. We also enjoyed a delicious breakfast each morning and loved the convenient location close to major attractions.",

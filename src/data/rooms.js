@@ -4,11 +4,13 @@ export const rooms = [
     id: 0,
     title: 'Complete Property',
     description:
-      'Reserve the entire Angel Hill estate — all villas, lawns, pool, and event spaces — for an exclusive private celebration, family function, or corporate retreat.',
-    price: 12999,
+      'Reserve the entire Angel Hill estate — all villas, lawns, pool, and event spaces — for an exclusive private celebration, family function, or corporate retreat. Minimum 5 guests required. Pricing is ₹1,000 per person; negotiable for groups of 15+.',
+    price: 1000,
+    priceType: 'per-head',
     image: '/images/side1.PNG',
     bookingType: 'private',
     capacity: 50,
+    minGuests: 5,
     amenities: [
       'All Rooms',
       'Private Pool',
